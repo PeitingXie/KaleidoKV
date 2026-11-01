@@ -1,5 +1,9 @@
 # KaleidoKV: Rearranging Evidence for Efficient KV Cache Reuse in Offline RAG Inference
 
+**[Supplementary Material](Appendix.pdf)**
+
+We provide the supplementary material, including omitted proofs, the exact DP, additional experiments on evidence count, reusable-order classes, regrouping rounds, and sharing density, and detailed experimental settings.
+
 ## 📄 Abstract
 
 Retrieval-augmented generation (RAG) augments large language models (LLMs) on question-answering (QA) tasks with retrieved evidence at inference time. Related questions in a batch often retrieve the same evidence. Prefix caching reuses its key–value (KV) states only when requests share identical token prefixes, so evidence order determines which computation can be shared. In offline batches, all questions and evidence are known before execution, allowing evidence orders to be planned jointly. Existing reordering methods commit to groups as they form, which can prevent better sharing across the batch. Revising these groups adds planning cost, and shared prefixes may still be computed repeatedly when requests run concurrently.

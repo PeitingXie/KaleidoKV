@@ -1,8 +1,8 @@
 # KaleidoKV: Rearranging Evidence for Efficient KV Cache Reuse in Offline RAG Inference
 
-**[Supplementary Material](Appendix.pdf)**
-
-We provide the supplementary material, including omitted proofs, the exact DP, additional experiments on evidence count, reusable-order classes, regrouping rounds, and sharing density, and detailed experimental settings.
+<a href="Appendix.pdf">
+  <img src="docs/assets/supplementary-material.svg" alt="Supplementary Material. We provide the supplementary material, including omitted proofs, the exact DP, additional experiments on evidence count, reusable-order classes, regrouping rounds, and sharing density, and detailed experimental settings." width="100%">
+</a>
 
 ## 📄 Abstract
 

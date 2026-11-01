@@ -4,7 +4,7 @@
 
 Retrieval-augmented generation (RAG) augments large language models (LLMs) on question-answering (QA) tasks with retrieved evidence at inference time. Related questions in a batch often retrieve the same evidence. Prefix caching reuses its key–value (KV) states only when requests share identical token prefixes, so evidence order determines which computation can be shared. In offline batches, all questions and evidence are known before execution, allowing evidence orders to be planned jointly. Existing reordering methods commit to groups as they form, which can prevent better sharing across the batch. Revising these groups adds planning cost, and shared prefixes may still be computed repeatedly when requests run concurrently.
 
-To address these challenges, we propose **KaleidoKV**, a framework that plans evidence orders across the batch and controls when requests enter the engine while preserving each request's evidence set and content. Joint regrouping revises formed groups through joint request moves and keeps a change only if it lowers planned prefill, the computation required when each shared prefix is computed once. A global prefix index evaluates each change from the old and new paths of moved requests without scanning the whole batch. Prefix-ready admission delays requests whose shared prefixes are being computed and lets other requests run.
+To address these challenges, we propose **KaleidoKV**, a framework that plans evidence orders across the batch and controls when requests enter the engine while preserving each request's evidence set and content. Joint layout planning revises formed groups through joint request moves and keeps a change only if it lowers planned prefill, the computation required when each shared prefix is computed once. A global prefix index evaluates each change from the old and new paths of moved requests without scanning the whole batch. Prefix-ready admission delays requests whose shared prefixes are being computed and lets other requests run.
 
 Experiments on four QA workloads and four LLMs show that KaleidoKV achieves the highest throughput and lowest mean time to first token in all 16 settings, with approximately 1.24–1.75× the throughput of the strongest baseline, including planning time. With Llama-3.1-8B under the default configuration, actual prefill stays within 0.5% of planned prefill across all four workloads.
 
@@ -15,11 +15,11 @@ Experiments on four QA workloads and four LLMs show that KaleidoKV achieves the 
 KaleidoKV plans the evidence order of every request on the CPU and runs the batch on SGLang 0.5.4, whose scheduler it extends at runtime without changing its source.
 
 <p align="center">
-  <a href="docs/assets/kaleidokv-overview.pdf"><img src="docs/assets/kaleidokv-overview.svg" alt="Challenges in existing work and KaleidoKV" width="100%"></a>
+  <a href="docs/assets/kaleidokv-overview.pdf"><img src="docs/assets/kaleidokv-overview.svg" alt="KaleidoKV Framework Overview" width="100%"></a>
 </p>
 
-**Figure 1: Challenges in existing work and KaleidoKV.**
-(a) **Early grouping decisions:** moving r3 or r5 alone raises planned prefill from 33 to 35 or 37, so neither request leaves group D. (b) **Costly regrouping checks:** the candidate moves grow exponentially, so they cannot be checked one by one. (c) **Prefix not ready:** admitting requests too early computes A twice, and waiting in queue order blocks independent work. (d) **KaleidoKV:** **joint regrouping** moves r3 and r5 together, lowers planned prefill from 33 to 30, and keeps only improving moves. The **global prefix index** computes the cost change from the nodes whose counts go from positive to zero or from zero to positive. **Prefix-ready admission** releases requests level by level and lets independent work run.
+**Figure 1: Overview of KaleidoKV.**
+(1) **Joint layout planning** rearranges each request's evidence to expose shared prefixes. (2) The **global prefix index** selects candidate orders and evaluates their prefill savings. (3) **Prefix-ready admission** uses the planned dependencies and runtime cache states to hold dependent requests and admit them when their shared prefixes become ready.
 
 ---
 
@@ -29,9 +29,9 @@ KaleidoKV addresses three complementary challenges:
 
 | Challenge | KaleidoKV approach |
 | --- | --- |
-| **Early grouping decisions** | Exact solving of small scopes, and merges and dissolves on large scopes |
-| **Costly regrouping checks** | Reference counts on a global prefix index, and order selection through its set table |
-| **Prefix not ready** | Admission by the readiness of shared-prefix segments |
+| **Inflexible grouping without joint refinement** | Exact solving of small scopes, and merges and dissolves on large scopes |
+| **Costly evaluation of grouping changes** | Reference counts on a global prefix index, and order selection through its set table |
+| **Redundant prefill under concurrent execution** | Admission by the readiness of shared-prefix segments |
 
 ---
 
@@ -44,7 +44,7 @@ KaleidoKV/
 ├── docs/assets/                 # README figure
 ├── kaleidokv/                   # Main source code
 │   ├── planner.py               # Planning entry point
-│   ├── layout.py                # Joint regrouping
+│   ├── layout.py                # Joint layout planning
 │   ├── prefix_index.py          # Global prefix index and prompt prefix tree
 │   ├── admission.py             # Prefix-ready admission in the SGLang scheduler
 │   ├── engine.py                # SGLang execution and time-to-first-token measurement

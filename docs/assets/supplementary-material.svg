@@ -1,7 +1,7 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 124" width="960" height="124" role="img" aria-label="Supplementary Material">
   <rect x="1" y="1" width="958" height="122" rx="10" fill="#E8F5E9" stroke="#A5D6A7" stroke-width="1.5"/>
   <g font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-weight="700" font-size="18" fill="#2E7D32">
-    <text x="18" y="29" text-decoration="underline">Supplementary Material</text>
+    <text x="18" y="29" fill="#0969DA"><tspan text-decoration="underline">Supplementary Material</tspan> (clickable)</text>
     <text x="18" y="59">We provide the supplementary material, including omitted proofs, the exact DP,</text>
     <text x="18" y="83">additional experiments on evidence count, reusable-order classes, regrouping rounds,</text>
     <text x="18" y="107">and sharing density, and detailed experimental settings.</text>

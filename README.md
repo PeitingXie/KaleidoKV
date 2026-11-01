@@ -1,6 +1,6 @@
 # KaleidoKV: Rearranging Evidence for Efficient KV Cache Reuse in Offline RAG Inference
 
-<a href="Appendix.pdf">
+<a href="KaleidoKV_Supplementary_Material_Appendix.pdf">
   <img src="docs/assets/supplementary-material.svg" alt="Supplementary Material. We provide the supplementary material, including omitted proofs, the exact DP, additional experiments on evidence count, reusable-order classes, regrouping rounds, and sharing density, and detailed experimental settings." width="100%">
 </a>
 
@@ -43,25 +43,26 @@ KaleidoKV addresses three complementary challenges:
 
 ## 📁 Directory Layout
 
-```text
-KaleidoKV/
-├── docs/assets/                 # README figure
-├── kaleidokv/                   # Main source code
-│   ├── planner.py               # Planning entry point
-│   ├── layout.py                # Joint layout planning
-│   ├── prefix_index.py          # Global prefix index and prompt prefix tree
-│   ├── admission.py             # Prefix-ready admission in the SGLang scheduler
-│   ├── engine.py                # SGLang execution and time-to-first-token measurement
-│   ├── workload.py              # Tokenization of the header, evidence, and questions
-│   ├── models.py                # Chat templates and stop tokens
-│   └── scoring.py               # ROUGE-L and exact match
-├── scripts/
-│   ├── prepare_dragonball.py    # DragonBall workload
-│   ├── plan.py                  # Planning on the CPU
-│   └── run.py                   # Planning, execution, and scoring
-├── pyproject.toml               # Python dependencies
-├── sglang-overrides.txt         # Dependency override for SGLang 0.5.4
-└── README.md                    # This file
+```diff
+ KaleidoKV/
+- ├── KaleidoKV_Supplementary_Material_Appendix.pdf  # Supplementary Material (Appendix)
+ ├── docs/assets/                 # README figures
+ ├── kaleidokv/                   # Main source code
+ │   ├── planner.py               # Planning entry point
+ │   ├── layout.py                # Joint layout planning
+ │   ├── prefix_index.py          # Global prefix index and prompt prefix tree
+ │   ├── admission.py             # Prefix-ready admission in the SGLang scheduler
+ │   ├── engine.py                # SGLang execution and time-to-first-token measurement
+ │   ├── workload.py              # Tokenization of the header, evidence, and questions
+ │   ├── models.py                # Chat templates and stop tokens
+ │   └── scoring.py               # ROUGE-L and exact match
+ ├── scripts/
+ │   ├── prepare_dragonball.py    # DragonBall workload
+ │   ├── plan.py                  # Planning on the CPU
+ │   └── run.py                   # Planning, execution, and scoring
+ ├── pyproject.toml               # Python dependencies
+ ├── sglang-overrides.txt         # Dependency override for SGLang 0.5.4
+ └── README.md                    # This file
 ```
 
 ---
